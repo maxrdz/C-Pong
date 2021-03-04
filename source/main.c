@@ -13,8 +13,8 @@
 
 */
 
+//#include "../deps/simple2d/include/simple2d.h"
 #include "../include/cpong.h"
-#include "../deps/simple2d/include/simple2d.h"
 
 #include <stdio.h>
 #include <stdlib.h>

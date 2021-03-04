@@ -1,0 +1,10 @@
+build/
+xcuserdata/
+
+test/auto
+test/triangle
+test/testcard
+test/audio
+test/controller
+test/*.exe
+test/screenshot.png

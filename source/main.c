@@ -28,19 +28,14 @@
 		printf("%s", input);
 	}
 #else
-	const char* debug(char* input) {
-		// No Debug Output
+	const char* debug(char input[]) {
+		// Debug Output Disabled
 	}
 #endif
 
-void debugmode() {
-	char str[] = "----- Debugging Mode -----\n";
-	debug(str);
-}
-
 int main() {
 
-	debugmode();
+	debug("----- Debugging Mode -----\n");
 
 	return EXIT_SUCCESS;
 

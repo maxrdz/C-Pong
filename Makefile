@@ -18,7 +18,7 @@ all: build compile clean
 # ----- Compile ----- #
 
 compile:
-	$(CC) main.o -o bin/cpong.exe
+	$(CC) main.o -o bin/cpong-win32.exe
 
 # ----- Build ------ #
 

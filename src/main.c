@@ -43,7 +43,7 @@
 void properties() {
 
 	// Set Window Icon
-	S2D_SetIcon(window, "res/icon.png");
+	S2D_SetIcon(window, "../res/icon.png");
 
 	// Set Window FPS Limit
 	window -> fps_cap = FPS_MAX;
@@ -51,12 +51,6 @@ void properties() {
 }
 
 void render() {
-
-	// Window Background Color
-	window -> background.r = 1.0;
-	window -> background.g = 0.5;
-	window -> background.b = 0.8;
-	window -> background.a = 1.0;
 
 	// Draw a Triangle
 	S2D_DrawTriangle (

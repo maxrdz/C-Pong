@@ -7,12 +7,11 @@
 
      Author: 	Max Rodriguez
      Created: 	3-3-2021
-     Revised: 	3-5-2021
+     Revised: 	3-6-2021
 
   Copyright (C) 2020 Max Rodriguez
 
-   Using the Simple2D Project,
-   copyright at ../deps/simple2d.
+    Licensed under Apache 2.0.
 
   ---------------------------------
 
@@ -40,16 +39,6 @@
 #define WIN_HEIGHT 480
 #define FPS_MAX 60
 
-void properties() {
-
-	// Set Window Icon
-	S2D_SetIcon(window, "../res/icon.png");
-
-	// Set Window FPS Limit
-	window -> fps_cap = FPS_MAX;
-
-}
-
 void render() {
 
 	// Draw a Triangle
@@ -71,12 +60,17 @@ int main() {
 
 	// Initialize Window
 	S2D_Window *window = S2D_CreateWindow (
-    	"Copyright (C) 2020 Max Rodriguez",
-		WIN_WIDTH, WIN_HEIGHT, NULL, render, 0
+    	"C-Pong", 	// Win Name
+		WIN_WIDTH, 	// Win Width
+		WIN_HEIGHT, // Win Height
+		NULL, 		// Update Function Reference
+		render, 	// Render Function Reference
+		0 			// Window Flags
   	);
 
-	// Apply Properties
-	properties();
+	S2D_SetIcon(window, "../res/icon.png"); // Window Icon
+
+	window -> fps_cap = FPS_MAX; // Window FPS Limit
 
 	// Launch Window
   	S2D_Show(window);

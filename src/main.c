@@ -56,7 +56,8 @@ void update() {
 
 int main() {
 
-	debug("----- Debugging Mode -----\n");
+	debug("------------ C-Pong ------------\n");
+	debug("\nCopyright (C) 2020 Max Rodriguez \n");
 
 	// Initialize Window
 	S2D_Window *window = S2D_CreateWindow (

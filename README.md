@@ -1,4 +1,5 @@
-# --- My 2D Pong Game, written in C. ---
-## Graphics rendered with Simple2D dependency.
+# --------------- C-Pong ---------------
+## 2D Graphics powered by the [Simple2D](https://github.com/simple2d/simple2d) library.
 -----------------------------------------
-### You can build the project by running `make all` on the Windows command prompt in the project directory.
+### You can build the project source code by simply running `make all` on the terminal in the repository directory.
+-----------------------------------------

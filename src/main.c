@@ -19,6 +19,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <simple2d.h>
 
 /* Debugging Mode */
@@ -38,6 +39,7 @@
 #define WIN_WIDTH 640
 #define WIN_HEIGHT 480
 #define FPS_MAX 60
+#define VSYNC true
 
 void render() {
 
@@ -60,11 +62,11 @@ int main() {
 	debug("\nCopyright (C) 2020 Max Rodriguez \n");
 
 	// Initialize Window
-	S2D_Window *window = S2D_CreateWindow (
+	S2D_Window *window = S2D_CreateWindow(
     	"C-Pong", 	// Win Name
 		WIN_WIDTH, 	// Win Width
 		WIN_HEIGHT, // Win Height
-		NULL, 		// Update Function Reference
+		update, 	// Update Function Reference
 		render, 	// Render Function Reference
 		0 			// Window Flags
   	);
@@ -72,6 +74,7 @@ int main() {
 	S2D_SetIcon(window, "../res/icon.png"); // Window Icon
 
 	window -> fps_cap = FPS_MAX; // Window FPS Limit
+	window -> vsync = VSYNC; // Vsync Mode
 
 	// Launch Window
   	S2D_Show(window);

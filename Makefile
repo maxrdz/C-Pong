@@ -11,11 +11,14 @@
 # =============================
 
 CC = gcc
-LIB = `simple2d --libs`
+
+# -> Simple 2D Library Paths
+LIBPATH = C:\Users\maxrc\AppData\Local\simple2d
+LIB = simple2d.lib
 
 all: build
 
-# ----- Build ------ #
+# ----- Build Source ------ #
 
 build:
-	$(CC) src/main.c $(LIB) -o bin/cpong-win32.exe
+	$(CC) src/main.c -L$(LIBPATH) -l$(LIB) -o bin/cpong-win32.exe

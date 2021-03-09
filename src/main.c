@@ -17,10 +17,12 @@
 
 */
 
+// Note: Points to Local Release of S2D
+#include "../libs/simple2d/simple2d.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <simple2d.h>
 
 /* Debugging Mode */
 #define DEBUG 1

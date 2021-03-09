@@ -18,7 +18,7 @@
 */
 
 // Note: Points to Local Release of S2D
-#include "../libs/simple2d/simple2d.h"
+#include "../include/simple2d/simple2d.h"
 
 #include <stdio.h>
 #include <stdlib.h>

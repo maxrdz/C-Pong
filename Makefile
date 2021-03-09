@@ -13,8 +13,8 @@
 CC = gcc
 
 # -> Simple 2D Library Paths
-LIBPATH = C:\Users\maxrc\AppData\Local\simple2d
-LIB = simple2d.lib
+LIBPATH = include/simple2d
+LIB = simple2d
 
 all: build
 

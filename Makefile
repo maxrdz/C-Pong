@@ -12,8 +12,8 @@
 
 CC = gcc
 
-# -> Simple 2D Library Paths
-LIBPATH = include/simple2d
+# Installed S2D Libraries
+LIBPATH = C:\MinGW\include
 LIB = simple2d
 
 all: build

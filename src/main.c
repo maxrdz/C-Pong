@@ -60,7 +60,7 @@ void update() {
 
 int main() {
 
-	debug("------------ C-Pong ------------\n");
+	debug("\n------------ C-Pong ------------\n");
 	debug("\nCopyright (C) 2020 Max Rodriguez \n\n");
 
 	// Initialize Window

@@ -2,7 +2,7 @@
 #
 #      C-Pong | Makefile
 #
-#     Written for Windows.
+#      Written for Linux.
 #
 # -----------------------------
 #
@@ -11,14 +11,15 @@
 # =============================
 
 CC = gcc
+CFLAGS = -D_REENTRANT
 
 # Installed S2D Libraries
-LIBPATH = C:\MinGW\include
-LIB = simple2d
+LIBPATH = /usr/include/SDL2
+LIBS = -lsimple2d -lSDL2 -lGL -lm -lSDL2_image -lSDL2_mixer -lSDL2_ttf
 
 all: build
 
 # ----- Build Source ------ #
 
 build:
-	$(CC) src/main.c -L$(LIBPATH) -l$(LIB) -o bin/cpong-win32.exe
+	$(CC) src/main.c -I$(LIBPATH) $(LIBS) $(CFLAGS) -o bin/cpong-amd64

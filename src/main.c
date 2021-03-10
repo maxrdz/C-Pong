@@ -3,11 +3,13 @@
 
     A 2D pong game written in C.
 
+	 Tested on a Linux system.
+
   ---------------------------------
 
      Author: 	Max Rodriguez
      Created: 	3-3-2021
-     Revised: 	3-6-2021
+     Revised: 	3-10-2021
 
   Copyright (C) 2020 Max Rodriguez
 
@@ -59,19 +61,17 @@ void update() {
 int main() {
 
 	debug("------------ C-Pong ------------\n");
-	debug("\nCopyright (C) 2020 Max Rodriguez \n");
+	debug("\nCopyright (C) 2020 Max Rodriguez \n\n");
 
 	// Initialize Window
 	S2D_Window *window = S2D_CreateWindow(
-    	"C-Pong", 	// Win Name
+    	"C-Pong",	// Win Title
 		WIN_WIDTH, 	// Win Width
 		WIN_HEIGHT, // Win Height
 		update, 	// Update Function Reference
 		render, 	// Render Function Reference
 		0 			// Window Flags
   	);
-
-	S2D_SetIcon(window, "../res/icon.png"); // Window Icon
 
 	window -> fps_cap = FPS_MAX; // Window FPS Limit
 	window -> vsync = VSYNC; // Vsync Mode

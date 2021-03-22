@@ -13,13 +13,23 @@
 CC = gcc
 CFLAGS = -D_REENTRANT
 
+.SILENT:
+
 # Simple2D Dependency
 S2DPATH = /usr/include/SDL2
 LIBS = -lsimple2d -lSDL2 -lGL -lm -lSDL2_image -lSDL2_mixer -lSDL2_ttf
 
-all: build
+all: build clean
 
 # ----- Build Source ------ #
 
-build:
-	$(CC) src/main.c -I$(S2DPATH) $(LIBS) $(CFLAGS) -o bin/cpong-amd64
+build: pong.o
+	$(CC) pong.o -I$(S2DPATH) $(LIBS) $(CFLAGS) -o bin/cpong-x86_64
+
+pong.o:
+	$(CC) -c src/pong.c -o pong.o
+
+# ----- Clean ----- #
+
+clean:
+	rm *.o && echo "Build Success!"

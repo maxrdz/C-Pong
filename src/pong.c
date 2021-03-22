@@ -3,7 +3,7 @@
 
     A 2D pong game written in C.
 
-	 Tested on a Linux system.
+     Tested on a Linux system.
 
   ---------------------------------
 
@@ -16,65 +16,40 @@
     Licensed under Apache 2.0.
 
   ---------------------------------
-
 */
 
+#include "pong.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <simple2d.h>
 
-/* Debugging Mode */
-#define DEBUG 1
-
-#if (DEBUG == 1)
-	void debug(char input[]) {
-		printf("%s", input);
-	}
-#else
-	void debug(char input[]) {
-		// Debug Output Disabled
-	}
-#endif
-
-/* Window Properties */
 #define WIN_WIDTH 640
 #define WIN_HEIGHT 480
 #define FPS_MAX 60
 #define VSYNC true
 
-void render() {
+bool debug_mode = false;
+bool fun_mode = false;
 
-	// Draw a Triangle
-	S2D_DrawTriangle (
-		320,  50, 1, 0, 0, 1,
-		540, 430, 0, 1, 0, 1,
-		100, 430, 0, 0, 1, 1
-	);
 
-}
+int main(int argc, char *argv[]) {
 
-void update() {
-	// Update Function
-}
-
-int main() {
+	// Check Invoked Flags
+	read_flags(argc, argv);
 
 	debug("\n------------ C-Pong ------------\n");
 	debug("\nCopyright (C) 2020 Max Rodriguez \n\n");
 
 	// Initialize Window
 	S2D_Window *window = S2D_CreateWindow(
-    	"C-Pong",	// Win Title
-		WIN_WIDTH, 	// Win Width
-		WIN_HEIGHT, // Win Height
-		update, 	// Update Function Reference
-		render, 	// Render Function Reference
-		0 			// Window Flags
+    	"C-Pong", WIN_WIDTH, WIN_HEIGHT,
+		update, render, 0
   	);
 
-	window -> fps_cap = FPS_MAX; // Window FPS Limit
-	window -> vsync = VSYNC; // Vsync Mode
+	// Window Properties
+	window -> fps_cap = FPS_MAX;
+	window -> vsync = VSYNC;
 
 	// Launch Window
   	S2D_Show(window);
@@ -83,5 +58,41 @@ int main() {
 	S2D_Close(window);
 	S2D_FreeWindow(window);
 	return EXIT_SUCCESS;
+
+}
+
+void read_flags(int argc, char *argv[]) {
+
+	for (int i = 1; i < argc; i++) {
+
+		if (strcmp(argv[i], "-d") == 0) {
+
+			debug_mode = true;
+
+		} else if (strcmp(argv[i], "-f") == 0) {
+
+			fun_mode = true;
+
+		}
+	}
+}
+
+void debug(char input[]) {
+
+	if (debug_mode == true) {
+		printf("%s", input);
+	}
+
+}
+
+void render() {
+
+	
+
+}
+
+void update() {
+	
+
 
 }

@@ -24,10 +24,11 @@
 #include <stdbool.h>
 #include <simple2d.h>
 
-#define WIN_WIDTH 640
-#define WIN_HEIGHT 480
 #define FPS_MAX 60
 #define VSYNC true
+#define WIN_WIDTH 640
+#define WIN_HEIGHT 480
+#define ICON "res/icon.png"
 
 bool debug_mode = false;
 bool fun_mode = false;
@@ -38,8 +39,8 @@ int main(int argc, char *argv[]) {
 	// Check Invoked Flags
 	read_flags(argc, argv);
 
-	debug("\n------------ C-Pong ------------\n");
-	debug("\nCopyright (C) 2020 Max Rodriguez \n\n");
+	printf("\n------------ C-Pong ------------\n");
+	printf("\nCopyright (C) 2020 Max Rodriguez \n\n");
 
 	// Initialize Window
 	S2D_Window *window = S2D_CreateWindow(
@@ -50,6 +51,7 @@ int main(int argc, char *argv[]) {
 	// Window Properties
 	window -> fps_cap = FPS_MAX;
 	window -> vsync = VSYNC;
+	window -> icon = ICON;
 
 	// Launch Window
   	S2D_Show(window);
@@ -60,6 +62,8 @@ int main(int argc, char *argv[]) {
 	return EXIT_SUCCESS;
 
 }
+
+/* Parse Invoked Flags */
 
 void read_flags(int argc, char *argv[]) {
 
@@ -77,22 +81,55 @@ void read_flags(int argc, char *argv[]) {
 	}
 }
 
-void debug(char input[]) {
+/* Debug Output Function */
 
+void debug(char input[]) {
 	if (debug_mode == true) {
 		printf("%s", input);
 	}
-
 }
+
+/* S2D Render Function */
 
 void render() {
 
-	
+	/* ----- Draw Title Screen  ----- */
+
+	S2D_Text *title = S2D_CreateText(
+		"res/Blippo-Bold.ttf",
+		"PONG", 150
+	);
+
+	title -> x = WIN_WIDTH / 4.6;
+	title -> y = WIN_HEIGHT / 5.5;
+
+	title -> color.r = 1.0;
+	title -> color.g = 0.9;
+	title -> color.b = 0.0;
+	title -> color.a = 1.0;
+
+	S2D_Text *play = S2D_CreateText(
+		"res/Press-Start-2P.ttf",
+		"Press A To Start", 20
+	);
+
+	play -> x = WIN_WIDTH / 4;
+	play -> y = WIN_HEIGHT / 1.74;
+
+	play -> color.r = 1.0;
+	play -> color.g = 1.0;
+	play -> color.b = 1.0;
+	play -> color.a = 1.0;
+
+	S2D_DrawText(title);
+	S2D_DrawText(play);
 
 }
 
+/* S2D Update Function */
+
 void update() {
 	
-
+	
 
 }

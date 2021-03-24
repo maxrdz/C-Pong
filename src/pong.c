@@ -9,7 +9,7 @@
 
      Author: 	Max Rodriguez
      Created: 	3-3-2021
-     Revised: 	3-10-2021
+     Revised: 	3-24-2021
 
   Copyright (C) 2020 Max Rodriguez
 
@@ -18,12 +18,12 @@
   ---------------------------------
 */
 
-#include "pong.h"
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <simple2d.h>
+#include "pong.h"
 
 #define FPS_MAX 60
 #define VSYNC true
@@ -53,6 +53,7 @@ int main(int argc, char *argv[]) {
 	window -> fps_cap = FPS_MAX;
 	window -> vsync = VSYNC;
 	window -> icon = ICON;
+	window -> on_key = on_key;
 
 	// Launch Window
   	S2D_Show(window);
@@ -143,20 +144,27 @@ void render() {
 	S2D_DrawText(title);
 	S2D_DrawText(play);
 
-	while (game_start == false) {
-		
-		S2D_FreeText(play); delay(1000);
-
-		S2D_DrawText(play); delay(1000);
-
-	}
-
 }
 
 /* S2D Update Function */
 
 void update() {
 
-	// Update Function
+	//play -> color.a = 0.0;
 
+}
+
+/* S2D On Key Callback */
+
+void on_key(S2D_Event event) {
+
+	switch (event.type) {
+
+		case S2D_KEY_DOWN:
+			break;
+
+		case S2D_KEY_UP:
+			break;
+
+	}
 }

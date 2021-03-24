@@ -8,6 +8,9 @@
 // Debug Function
 void debug(char input[]);
 
+// Delay Function
+void delay(int mseconds);
+
 // Simple2D Functions
 void render();
 void update();

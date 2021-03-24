@@ -19,6 +19,7 @@
 */
 
 #include "pong.h"
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -84,10 +85,28 @@ void read_flags(int argc, char *argv[]) {
 /* Debug Output Function */
 
 void debug(char input[]) {
+
 	if (debug_mode == true) {
 		printf("%s", input);
 	}
+
 }
+
+/* Delay Function */
+void delay(int mseconds) {
+
+	long pause;
+	clock_t now,then;
+
+	pause = mseconds * (CLOCKS_PER_SEC / 1000);
+	now = then = clock();
+	while( (now-then) < pause ) now = clock();
+
+}
+
+/* Game Variables */
+
+bool game_start = false;
 
 /* S2D Render Function */
 
@@ -124,12 +143,20 @@ void render() {
 	S2D_DrawText(title);
 	S2D_DrawText(play);
 
+	while (game_start == false) {
+		
+		S2D_FreeText(play); delay(1000);
+
+		S2D_DrawText(play); delay(1000);
+
+	}
+
 }
 
 /* S2D Update Function */
 
 void update() {
-	
-	
+
+	// Update Function
 
 }

@@ -24,12 +24,12 @@ all: build clean
 # ----- Build Source ------ #
 
 build: pong.o
-	$(CC) pong.o -I$(S2DPATH) $(LIBS) $(CFLAGS) -o bin/cpong-x86_64
+	$(CC) bin/pong.o -I$(S2DPATH) $(LIBS) $(CFLAGS) -o bin/cpong-x86_64
 
 pong.o:
-	$(CC) -c src/pong.c -o pong.o
+	$(CC) -c src/pong.c -o bin/pong.o
 
 # ----- Clean ----- #
 
 clean:
-	rm *.o && echo "Build Success!"
+	cd bin && rm *.o && echo "Build Success!"

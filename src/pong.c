@@ -115,7 +115,7 @@ void render() {
 
 	/* ----- Draw Title Screen  ----- */
 
-	S2D_Text *title = S2D_CreateText(
+	title = S2D_CreateText(
 		"res/Blippo-Bold.ttf",
 		"PONG", 150
 	);
@@ -128,7 +128,7 @@ void render() {
 	title -> color.b = 0.0;
 	title -> color.a = 1.0;
 
-	S2D_Text *play = S2D_CreateText(
+	play = S2D_CreateText(
 		"res/Press-Start-2P.ttf",
 		"Press A To Start", 20
 	);

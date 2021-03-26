@@ -128,6 +128,14 @@ void render() {
 	title -> color.b = 0.0;
 	title -> color.a = 1.0;
 
+	S2D_DrawText(title);
+
+}
+
+/* S2D Update Function */
+
+void update() {
+
 	play = S2D_CreateText(
 		"res/Press-Start-2P.ttf",
 		"Press A To Start", 20
@@ -141,16 +149,14 @@ void render() {
 	play -> color.b = 1.0;
 	play -> color.a = 1.0;
 
-	S2D_DrawText(title);
 	S2D_DrawText(play);
 
-}
+	while (game_start == false) {
 
-/* S2D Update Function */
+		S2D_DrawText(play); delay(750);
+		S2D_FreeText(play); delay(750);
 
-void update() {
-
-	//play -> color.a = 0.0;
+	}
 
 }
 

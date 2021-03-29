@@ -150,14 +150,14 @@ void update() {
 	play -> color.a = 1.0;
 
 	S2D_DrawText(play);
-
+/*
 	while (game_start == false) {
 
 		S2D_DrawText(play); delay(750);
 		S2D_FreeText(play); delay(750);
 
 	}
-
+*/
 }
 
 /* S2D On Key Callback */

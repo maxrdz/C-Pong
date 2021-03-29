@@ -167,9 +167,11 @@ void on_key(S2D_Event event) {
 	switch (event.type) {
 
 		case S2D_KEY_DOWN:
+			debug("Key Pressed!\n");
 			break;
 
 		case S2D_KEY_UP:
+			debug("Key Released!\n");
 			break;
 
 	}

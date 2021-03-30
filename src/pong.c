@@ -141,7 +141,7 @@ void update() {
 		"Press A To Start", 20
 	);
 
-	play -> x = WIN_WIDTH / 4;
+	play -> x = WIN_WIDTH / 3.9;
 	play -> y = WIN_HEIGHT / 1.74;
 
 	play -> color.r = 1.0;
@@ -149,15 +149,38 @@ void update() {
 	play -> color.b = 1.0;
 	play -> color.a = 1.0;
 
-	S2D_DrawText(play);
-/*
-	while (game_start == false) {
+	if (game_start == false) {
 
-		S2D_DrawText(play); delay(750);
-		S2D_FreeText(play); delay(750);
+		switch (start_txt) {
 
+			case true:
+
+				S2D_DrawText(play);
+
+				if (txt_cooldown == 30) {
+					debug("Start Text Drawn.\n");
+					start_txt = false;
+					txt_cooldown = 0;
+				}
+
+				txt_cooldown++;
+				break;
+
+			case false:
+
+				S2D_FreeText(play);
+
+				if (txt_cooldown == 30) {
+					debug("Start Text Freed.\n");
+					start_txt = true;
+					txt_cooldown = 0;
+				}
+
+				txt_cooldown++;
+				break;
+
+		}
 	}
-*/
 }
 
 /* S2D On Key Callback */

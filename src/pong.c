@@ -9,7 +9,7 @@
 
      Author: 	Max Rodriguez
      Created: 	3-3-2021
-     Revised: 	3-24-2021
+     Revised: 	3-29-2021
 
   Copyright (C) 2020 Max Rodriguez
 
@@ -207,6 +207,8 @@ void input(S2D_Event event) {
 
 	}
 }
+
+/* Key Stroke Actions */
 
 void key_actions(char key, int state) {
 

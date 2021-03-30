@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
 	window -> fps_cap = FPS_MAX;
 	window -> vsync = VSYNC;
 	window -> icon = ICON;
-	window -> on_key = on_key;
+	window -> on_key = input;
 
 	// Launch Window
   	S2D_Show(window);
@@ -113,7 +113,7 @@ bool game_start = false;
 
 void render() {
 
-	/* ----- Draw Title Screen  ----- */
+	// Game Title Text //
 
 	title = S2D_CreateText(
 		"res/Blippo-Bold.ttf",
@@ -128,14 +128,8 @@ void render() {
 	title -> color.b = 0.0;
 	title -> color.a = 1.0;
 
-	S2D_DrawText(title);
-
-}
-
-/* S2D Update Function */
-
-void update() {
-
+	// Press Start Text //
+	
 	play = S2D_CreateText(
 		"res/Press-Start-2P.ttf",
 		"Press A To Start", 20
@@ -149,7 +143,15 @@ void update() {
 	play -> color.b = 1.0;
 	play -> color.a = 1.0;
 
+}
+
+/* S2D Update Function */
+
+void update() {
+
 	if (game_start == false) {
+
+		S2D_DrawText(title);
 
 		switch (start_txt) {
 
@@ -178,24 +180,56 @@ void update() {
 
 				txt_cooldown++;
 				break;
-
 		}
+
+	} else {
+
+		// Main Update State
+
 	}
 }
 
 /* S2D On Key Callback */
 
-void on_key(S2D_Event event) {
+void input(S2D_Event event) {
 
 	switch (event.type) {
 
 		case S2D_KEY_DOWN:
 			debug("Key Pressed!\n");
+			key_actions(*event.key, S2D_KEY_DOWN);
 			break;
 
 		case S2D_KEY_UP:
 			debug("Key Released!\n");
+			key_actions(*event.key, S2D_KEY_UP);
 			break;
 
 	}
+}
+
+void key_actions(char key, int state) {
+
+	switch (key) {
+
+		case 'A':
+
+			if (game_start == false) {
+				debug("Game START!\n");
+				game_start = true;
+			}
+			break;
+
+		case 'U':
+
+			// Paddle Go Up
+			break;
+
+		case 'D':
+
+			// Paddle Go Down
+			break;
+
+	}
+
 }

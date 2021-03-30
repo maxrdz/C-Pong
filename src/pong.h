@@ -18,10 +18,13 @@ void delay(int mseconds);
 // Simple2D Functions
 void render();
 void update();
-void on_key(S2D_Event event);
+void input(S2D_Event event);
 
 // Check Program Flags
 void read_flags(int argc, char *argv[]);
+
+// Key Actions
+void key_actions(char key, int state);
 
 // Miscellaneous
 bool start_txt = true;

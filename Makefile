@@ -2,11 +2,18 @@
 #
 #      C-Pong | Makefile
 #
-#      Written for Linux.
+# -----------------------------
+#
+#  Run 'make build' to build.
+#
+#   Run 'make test' to test.
 #
 # -----------------------------
 #
-#   Run 'make all' to build.
+#    Required Dependencies
+#
+#    - Simple2D Library
+#    - Valgrind Tool
 #
 # =============================
 
@@ -15,21 +22,28 @@ CFLAGS = -D_REENTRANT
 
 .SILENT:
 
+build: link clean
+test: memtest
+
 # Simple2D Dependency
 S2DPATH = /usr/include/SDL2
 LIBS = -lsimple2d -lSDL2 -lGL -lm -lSDL2_image -lSDL2_mixer -lSDL2_ttf
 
-all: build clean
 
 # ----- Build Source ------ #
 
-build: pong.o
+link: pong.o
 	$(CC) bin/pong.o -I$(S2DPATH) $(LIBS) $(CFLAGS) -o bin/cpong-x86_64
 
 pong.o:
 	$(CC) -c src/pong.c -o bin/pong.o
 
+# ----- Memory Leak Test ----- #
+
+memtest:
+	valgrind --tool=memcheck bin/cpong-x86_64 && rm vgcore*
+
 # ----- Clean ----- #
 
 clean:
-	cd bin && rm *.o && echo "Build Success!"
+	rm bin/*.o && echo "[OK]: Build Success!"

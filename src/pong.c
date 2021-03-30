@@ -9,7 +9,7 @@
 
      Author: 	Max Rodriguez
      Created: 	3-3-2021
-     Revised: 	3-29-2021
+     Revised: 	3-30-2021
 
   Copyright (C) 2020 Max Rodriguez
 
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
 	window -> icon = ICON;
 	window -> on_key = input;
 
-	// Launch Window
+	// Launch Window Loop
   	S2D_Show(window);
 
 	// Program Exit
@@ -101,20 +101,15 @@ void delay(int mseconds) {
 
 	pause = mseconds * (CLOCKS_PER_SEC / 1000);
 	now = then = clock();
-	while( (now-then) < pause ) now = clock();
+	while((now-then) < pause) now = clock();
 
 }
-
-/* Game Variables */
-
-bool game_start = false;
 
 /* S2D Render Function */
 
 void render() {
 
 	// Game Title Text //
-
 	title = S2D_CreateText(
 		"res/Blippo-Bold.ttf",
 		"PONG", 150
@@ -126,10 +121,8 @@ void render() {
 	title -> color.r = 1.0;
 	title -> color.g = 0.9;
 	title -> color.b = 0.0;
-	title -> color.a = 1.0;
 
 	// Press Start Text //
-	
 	play = S2D_CreateText(
 		"res/Press-Start-2P.ttf",
 		"Press A To Start", 20
@@ -141,13 +134,25 @@ void render() {
 	play -> color.r = 1.0;
 	play -> color.g = 1.0;
 	play -> color.b = 1.0;
-	play -> color.a = 1.0;
+
+	// Paddle Object //
+	const int paddle_x = 550;
+	const int paddle_h = 60;
+	const int paddle_w = 20;
+	const int y_margin = 25;
+
+	// Ball Object //
+	const int radius = 20;
+	const float spawn_x = WIN_WIDTH / 2;
+	const float spawn_y = WIN_HEIGHT / 2;
 
 }
 
 /* S2D Update Function */
 
 void update() {
+
+	if (tick_counter == 30) tick_counter = 0;
 
 	if (game_start == false) {
 
@@ -159,34 +164,59 @@ void update() {
 
 				S2D_DrawText(play);
 
-				if (txt_cooldown == 30) {
+				if (tick_counter % 30 == 0) {
 					debug("Start Text Drawn.\n");
 					start_txt = false;
-					txt_cooldown = 0;
 				}
-
-				txt_cooldown++;
 				break;
 
 			case false:
 
 				S2D_FreeText(play);
 
-				if (txt_cooldown == 30) {
+				if (tick_counter % 30 == 0) {
 					debug("Start Text Freed.\n");
 					start_txt = true;
-					txt_cooldown = 0;
 				}
-
-				txt_cooldown++;
 				break;
+		}
+
+		if (fun_mode) {
+
+			fun_tag = S2D_CreateText(
+				"res/Press-Start-2P.ttf",
+				"Fun Mode ON!", 15
+			);
+
+			fun_tag -> x = WIN_WIDTH / 1.55;
+			fun_tag -> y = WIN_HEIGHT / 160;
+			fun_tag -> rotate = 10;
+
+			fun_tag -> color.r = 1.0;
+			fun_tag -> color.g = 0.5;
+			fun_tag -> color.b = 1.0;
+
+			if (tick_counter % 2 == 0)
+			fun_tag -> color.a = 2.0;
+			else fun_tag -> color.a = 0.1;
+
+			S2D_DrawText(fun_tag);
+			
 		}
 
 	} else {
 
-		// Main Update State
+		if (fun_mode) {
+			// TODO: Fun mode
+		} else {
 
+			// Regular Game
+
+		}
 	}
+
+	tick_counter++; // Add tick
+
 }
 
 /* S2D On Key Callback */

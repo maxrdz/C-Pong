@@ -14,9 +14,8 @@ int tick_counter = 0;
 S2D_Text *title;
 S2D_Text *play;
 S2D_Text *fun_tag;
-
-// Object Definitions
-void definitions();
+S2D_Text *fun_text;
+S2D_Text *version_tag;
 
 // Debug Function
 void debug(char input[]);

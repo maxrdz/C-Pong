@@ -8,4 +8,6 @@
 ### `-d` to run on debugging mode. Prints any `debug()` statements.
 ### `-f` to run on fun-mode. This mode is not yet complete.
 -----------------------------------------
+## NOTE: Run executable binary FROM the repository directory. If you run it from the `bin` directory, it will cause to error when fetching resources.
+-----------------------------------------
 ## Licensed under the [Apache 2.0](https://github.com/Max-Rodriguez/C-Pong/blob/master/LICENSE) license.

@@ -18,6 +18,8 @@
   ---------------------------------
 */
 
+#define VERSION "1.1"
+
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,7 +31,6 @@
 #define VSYNC true
 #define WIN_WIDTH 640
 #define WIN_HEIGHT 480
-#define ICON "res/icon.png"
 
 bool debug_mode = false;
 bool fun_mode = false;
@@ -52,7 +53,7 @@ int main(int argc, char *argv[]) {
 	// Window Properties
 	window -> fps_cap = FPS_MAX;
 	window -> vsync = VSYNC;
-	window -> icon = ICON;
+	window -> icon = "res/icon.png";
 	window -> on_key = input;
 
 	// Launch Window Loop
@@ -152,8 +153,10 @@ void render() {
 
 void update() {
 
+	// Ticks Reset (avoids overflow) //
 	if (tick_counter == 30) tick_counter = 0;
 
+	// Main Game States //
 	if (game_start == false) {
 
 		S2D_DrawText(title);
@@ -207,13 +210,38 @@ void update() {
 	} else {
 
 		if (fun_mode) {
-			// TODO: Fun mode
+
+			// TODO: Make Fun mode
+
+			// Fun Mode Text (render last) //
+			fun_text = S2D_CreateText(
+				"res/Press-Start-2P.ttf",
+				"Fun Mode - Work In Progress", 14
+			);
+
+			fun_text -> x = WIN_WIDTH / 4.8;
+			fun_text -> y = WIN_HEIGHT / 30;
+			S2D_DrawText(fun_text);
+
 		} else {
 
 			// Regular Game
 
 		}
 	}
+
+	// Game Version Tag //
+	char _version_string[12];
+	snprintf(_version_string, 12, "Version %s", VERSION);
+
+	version_tag = S2D_CreateText(
+		"res/Press-Start-2P.ttf",
+		_version_string, 10
+	);
+
+	version_tag -> x = WIN_WIDTH / 40;
+	version_tag -> y = WIN_HEIGHT / 1.04;
+	S2D_DrawText(version_tag);
 
 	tick_counter++; // Add tick
 

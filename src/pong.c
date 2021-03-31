@@ -19,6 +19,10 @@
 */
 
 #define VERSION "1.1"
+#define FPS_MAX 60
+#define VSYNC true
+#define WIN_WIDTH 640
+#define WIN_HEIGHT 480
 
 #include <time.h>
 #include <stdio.h>
@@ -26,11 +30,6 @@
 #include <stdbool.h>
 #include <simple2d.h>
 #include "pong.h"
-
-#define FPS_MAX 60
-#define VSYNC true
-#define WIN_WIDTH 640
-#define WIN_HEIGHT 480
 
 bool debug_mode = false;
 bool fun_mode = false;
@@ -136,17 +135,6 @@ void render() {
 	play -> color.g = 1.0;
 	play -> color.b = 1.0;
 
-	// Paddle Object //
-	const int paddle_x = 550;
-	const int paddle_h = 60;
-	const int paddle_w = 20;
-	const int y_margin = 25;
-
-	// Ball Object //
-	const int radius = 20;
-	const float spawn_x = WIN_WIDTH / 2;
-	const float spawn_y = WIN_HEIGHT / 2;
-
 }
 
 /* S2D Update Function */
@@ -209,11 +197,15 @@ void update() {
 
 	} else {
 
+		/* ----- Regular Features ----- */
+
+		
+
+		/* ----- Fun Mode Features ----- */
+
 		if (fun_mode) {
 
-			// TODO: Make Fun mode
-
-			// Fun Mode Text (render last) //
+			// TODO: Make Fun mode lol
 			fun_text = S2D_CreateText(
 				"res/Press-Start-2P.ttf",
 				"Fun Mode - Work In Progress", 14
@@ -223,12 +215,18 @@ void update() {
 			fun_text -> y = WIN_HEIGHT / 30;
 			S2D_DrawText(fun_text);
 
-		} else {
-
-			// Regular Game
-
 		}
+
+		/* ------ Draw Objects ------ */
+
+		S2D_DrawCircle(
+			ball_x, ball_y, ball_radius,
+			1, 1.0, 1.0, 1.0, 1.0
+		);
+
 	}
+
+	/* ------ Following Drawn On Top ------ */
 
 	// Game Version Tag //
 	char _version_string[12];

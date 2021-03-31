@@ -17,6 +17,26 @@ S2D_Text *fun_tag;
 S2D_Text *fun_text;
 S2D_Text *version_tag;
 
+// Ball Properties //
+const int ball_radius = 20;
+float ball_x = WIN_WIDTH / 2;
+float ball_y = WIN_HEIGHT / 2;
+
+double ball_color[4] = {
+	1.0, 1.0, 1.0, 1.0
+};
+
+// Paddle Properties //
+const int paddle_x = WIN_WIDTH / 1.3;
+const int paddle_h = 60;
+const int paddle_w = 20;
+const int y_margin = 25;
+float paddle_y = WIN_HEIGHT / 2;
+
+double paddle_color[4] = {
+	1.0, 1.0, 1.0, 1.0
+};
+
 // Debug Function
 void debug(char input[]);
 

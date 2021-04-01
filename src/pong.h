@@ -26,6 +26,8 @@ double ball_color[4] = {
 	1.0, 1.0, 1.0, 1.0
 };
 
+int ball_state[2] = {-1, 1};
+
 // Paddle Properties //
 const int paddle_x = WIN_WIDTH / 1.3;
 const int paddle_h = 60;

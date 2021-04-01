@@ -221,7 +221,8 @@ void update() {
 
 		S2D_DrawCircle(
 			ball_x, ball_y, ball_radius,
-			1, 1.0, 1.0, 1.0, 1.0
+			1, ball_color[0], ball_color[1],
+			ball_color[2], ball_color[3]
 		);
 
 	}

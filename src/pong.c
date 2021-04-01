@@ -18,7 +18,7 @@
   ---------------------------------
 */
 
-#define VERSION "1.1"
+#define VERSION "0.7"
 #define FPS_MAX 60
 #define VSYNC true
 #define WIN_WIDTH 640
@@ -93,18 +93,6 @@ void debug(char input[]) {
 
 }
 
-/* Delay Function */
-void delay(int mseconds) {
-
-	long pause;
-	clock_t now,then;
-
-	pause = mseconds * (CLOCKS_PER_SEC / 1000);
-	now = then = clock();
-	while((now-then) < pause) now = clock();
-
-}
-
 /* S2D Render Function */
 
 void render() {
@@ -112,8 +100,7 @@ void render() {
 	// Game Title Text //
 	title = S2D_CreateText(
 		"res/Blippo-Bold.ttf",
-		"PONG", 150
-	);
+		"PONG", 150);
 
 	title -> x = WIN_WIDTH / 4.6;
 	title -> y = WIN_HEIGHT / 5.5;
@@ -125,8 +112,7 @@ void render() {
 	// Press Start Text //
 	play = S2D_CreateText(
 		"res/Press-Start-2P.ttf",
-		"Press A To Start", 20
-	);
+		"Press A To Start", 20);
 
 	play -> x = WIN_WIDTH / 3.9;
 	play -> y = WIN_HEIGHT / 1.74;
@@ -176,8 +162,7 @@ void update() {
 
 			fun_tag = S2D_CreateText(
 				"res/Press-Start-2P.ttf",
-				"Fun Mode ON!", 15
-			);
+				"Fun Mode ON!", 15);
 
 			fun_tag -> x = WIN_WIDTH / 1.55;
 			fun_tag -> y = WIN_HEIGHT / 160;
@@ -197,9 +182,14 @@ void update() {
 
 	} else {
 
-		/* ----- Regular Features ----- */
+		/* ----- Global Features ----- */
 
-		
+		int paddle[4][2] = {
+    		{(pad_x + (pad_w / 2)), (pad_y - (pad_h / 2))},
+			{(pad_x - (pad_w / 2)), (pad_y + (pad_h / 2))},
+    		{(pad_x - (pad_w / 2)), (pad_y + (pad_h / 2))},
+			{(pad_x + (pad_w / 2)), (pad_y - (pad_h / 2))}
+		};
 
 		/* ----- Fun Mode Features ----- */
 
@@ -208,8 +198,7 @@ void update() {
 			// TODO: Make Fun mode lol
 			fun_text = S2D_CreateText(
 				"res/Press-Start-2P.ttf",
-				"Fun Mode - Work In Progress", 14
-			);
+				"Fun Mode - Work In Progress", 14);
 
 			fun_text -> x = WIN_WIDTH / 4.8;
 			fun_text -> y = WIN_HEIGHT / 30;
@@ -219,11 +208,16 @@ void update() {
 
 		/* ------ Draw Objects ------ */
 
+		S2D_DrawQuad(
+			paddle[0][0], paddle[0][1], 1.0, 1.0, 1.0, 1.0,
+			paddle[1][0], paddle[1][1], 1.0, 1.0, 1.0, 1.0,
+			paddle[2][0], paddle[2][1], 1.0, 1.0, 1.0, 1.0,
+			paddle[3][0], paddle[3][1], 1.0, 1.0, 1.0, 1.0);
+
 		S2D_DrawCircle(
 			ball_x, ball_y, ball_radius,
-			1, ball_color[0], ball_color[1],
-			ball_color[2], ball_color[3]
-		);
+			ball_sectors, b_color[0], b_color[1],
+			b_color[2], b_color[3]);
 
 	}
 
@@ -235,8 +229,7 @@ void update() {
 
 	version_tag = S2D_CreateText(
 		"res/Press-Start-2P.ttf",
-		_version_string, 10
-	);
+		_version_string, 10);
 
 	version_tag -> x = WIN_WIDTH / 40;
 	version_tag -> y = WIN_HEIGHT / 1.04;
@@ -279,15 +272,9 @@ void key_actions(char key, int state) {
 			}
 			break;
 
-		case 'U':
+		case 'U': pad_y++; break;
 
-			// Paddle Go Up
-			break;
-
-		case 'D':
-
-			// Paddle Go Down
-			break;
+		case 'D': pad_y--; break;
 
 	}
 

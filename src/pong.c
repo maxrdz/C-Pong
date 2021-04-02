@@ -130,7 +130,36 @@ void update() {
 	// Ticks Reset (avoids overflow) //
 	if (tick_counter == 30) tick_counter = 0;
 
-	// Main Game States //
+	// Define Version Tag
+	char version_string[12];
+	snprintf(version_string, 12, "Version %s", VERSION);
+
+	version_tag = S2D_CreateText(
+		"res/Press-Start-2P.ttf",
+		version_string, 10);
+
+	version_tag -> x = WIN_WIDTH / 40;
+	version_tag -> y = WIN_HEIGHT / 1.04;
+
+	// Define Lives Counter
+	char life_str[1];
+	sprintf(life_str, "%i", lives);
+
+	char lives_string[9];
+	snprintf(lives_string, 9, "%s Lives", life_str);
+
+	lives_count = S2D_CreateText(
+		"res/Press-Start-2P.ttf",
+		lives_string, 13);
+		
+	lives_count -> x = WIN_WIDTH / 1.23;
+	lives_count -> y = WIN_HEIGHT / 1.04;
+
+	lives_count -> color.g = 0.0;
+	lives_count -> color.b = 0.0;
+
+	// --- Main Game States --- //
+
 	if (game_start == false) {
 
 		S2D_DrawText(title);
@@ -184,7 +213,7 @@ void update() {
 
 		/* ----- Global Features ----- */
 
-		// Keep Paddle 'y' within margin.
+		// Restrict Paddle 'y' within margin.
 		if (pad_y < y_margin)
 			pad_y = y_margin;
 		else if (pad_y > WIN_HEIGHT - y_margin)
@@ -210,15 +239,31 @@ void update() {
 
 		if (fun_mode) {
 
-			// TODO: Make Fun mode lol
+			// Define Enabled Text
 			fun_text = S2D_CreateText(
 				"res/Press-Start-2P.ttf",
-				"Fun Mode - Work In Progress", 14);
+				"Fun Mode Enabled", 10);
 
-			fun_text -> x = WIN_WIDTH / 4.8;
-			fun_text -> y = WIN_HEIGHT / 30;
-			S2D_DrawText(fun_text);
+			fun_text -> x = WIN_WIDTH / 2.6;
+			fun_text -> y = WIN_HEIGHT / 1.04;
 
+			fun_text -> color.g = 0.0;
+			fun_text -> color.b = 0.7;
+
+			// Ball color loop (every other tick)
+			if (tick_counter % 2) {
+
+				// Reset Ball Color Step
+				if (chain_track == 10) chain_track = 0;
+
+				// Set Next Ball Color
+				b_color[0] = chain[chain_track - 1][0];
+				b_color[1] = chain[chain_track - 1][1];
+				b_color[2] = chain[chain_track - 1][2];
+				b_color[3] = chain[chain_track - 1][3];
+				chain_track++;
+				
+			}
 		}
 
 		/* ------ Draw Objects ------ */
@@ -238,37 +283,10 @@ void update() {
 
 	/* ------ Following Drawn On Top ------ */
 
-	// Game Version Tag //
-	char version_string[12];
-	snprintf(version_string, 12, "Version %s", VERSION);
-
-	version_tag = S2D_CreateText(
-		"res/Press-Start-2P.ttf",
-		version_string, 10);
-
-	version_tag -> x = WIN_WIDTH / 40;
-	version_tag -> y = WIN_HEIGHT / 1.04;
-
-	// Lives Counter Text //
-	char life_str[1];
-	sprintf(life_str, "%i", lives);
-
-	char lives_string[9];
-	snprintf(lives_string, 9, "%s Lives", life_str);
-
-	lives_count = S2D_CreateText(
-		"res/Press-Start-2P.ttf",
-		lives_string, 13);
-	
-	lives_count -> x = WIN_WIDTH / 1.23;
-	lives_count -> y = WIN_HEIGHT / 1.04;
-
-	lives_count -> color.g = 0.0;
-	lives_count -> color.b = 0.0;
-
-	// Draw to Screen
+	// Last Drawn to Screen
 	S2D_DrawText(version_tag);
 	S2D_DrawText(lives_count);
+	S2D_DrawText(fun_text);
 
 	tick_counter++; // Add tick
 

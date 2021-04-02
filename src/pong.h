@@ -18,8 +18,7 @@ float ball_x = WIN_WIDTH / 2;
 float ball_y = WIN_HEIGHT / 2;
 
 double b_color[4] = {
-	1.0, 1.0, 1.0, 1.0
-};
+	1.0, 1.0, 1.0, 1.0};
 
 int ball_state[2] = {1, 1};
 
@@ -55,7 +54,7 @@ void read_flags(int argc, char *argv[]);
 void key_actions(char key, int state);
 
 // Ball Color Animation
-int chain_track = 0;
+int chain_track = 1;
 const float chain[10][4] = {
     {1.0, 0.1, 0.0, 1.0}, // Red
     {1.0, 0.3, 0.0, 1.0}, // Red / Orange

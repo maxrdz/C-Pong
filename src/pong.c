@@ -312,8 +312,7 @@ void key_actions(char key, int state) {
 			if (game_start == false) {
 				debug("Game START!\n");
 				game_start = true;
-			}
-			break;
+			} break;
 
 		case 'U':
 			if (game_start) pad_y = pad_y - 2; break;

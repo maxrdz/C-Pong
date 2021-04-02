@@ -96,31 +96,7 @@ void debug(char input[]) {
 /* S2D Render Function */
 
 void render() {
-
-	// Game Title Text //
-	title = S2D_CreateText(
-		"res/Blippo-Bold.ttf",
-		"PONG", 150);
-
-	title -> x = WIN_WIDTH / 4.6;
-	title -> y = WIN_HEIGHT / 5.5;
-
-	title -> color.r = 1.0;
-	title -> color.g = 0.9;
-	title -> color.b = 0.0;
-
-	// Press Start Text //
-	play = S2D_CreateText(
-		"res/Press-Start-2P.ttf",
-		"Press A To Start", 20);
-
-	play -> x = WIN_WIDTH / 3.9;
-	play -> y = WIN_HEIGHT / 1.74;
-
-	play -> color.r = 1.0;
-	play -> color.g = 1.0;
-	play -> color.b = 1.0;
-
+	// All on update()
 }
 
 /* S2D Update Function */
@@ -162,13 +138,35 @@ void update() {
 
 	if (game_start == false) {
 
-		S2D_DrawText(title);
+		// Game Title Text //
+		title = S2D_CreateText(
+			"res/Blippo-Bold.ttf",
+			"PONG", 150);
+
+		title -> x = WIN_WIDTH / 4.6;
+		title -> y = WIN_HEIGHT / 5.5;
+
+		title -> color.r = 1.0;
+		title -> color.g = 0.9;
+		title -> color.b = 0.0;
+
+		// Press Start Text //
+		play = S2D_CreateText(
+			"res/Press-Start-2P.ttf",
+			"Press A To Start", 20);
+
+		play -> x = WIN_WIDTH / 3.9;
+		play -> y = WIN_HEIGHT / 1.74;
+
+		play -> color.r = 1.0;
+		play -> color.g = 1.0;
+		play -> color.b = 1.0;
 
 		switch (start_txt) {
 
 			case true:
 
-				S2D_DrawText(play);
+				play -> color.a = 1.0;
 
 				if (tick_counter % 30 == 0) {
 					debug("Start Text Drawn.\n");
@@ -178,7 +176,7 @@ void update() {
 
 			case false:
 
-				S2D_FreeText(play);
+				play -> color.a = 0.0;
 
 				if (tick_counter % 30 == 0) {
 					debug("Start Text Freed.\n");
@@ -208,6 +206,10 @@ void update() {
 			S2D_DrawText(fun_tag);
 			
 		}
+
+		// Draw Text Objects
+		S2D_DrawText(title);
+		S2D_DrawText(play);
 
 	} else {
 
@@ -262,7 +264,7 @@ void update() {
 				b_color[2] = chain[chain_track - 1][2];
 				b_color[3] = chain[chain_track - 1][3];
 				chain_track++;
-				
+
 			}
 		}
 

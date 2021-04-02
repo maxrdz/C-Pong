@@ -2,6 +2,7 @@
   ============ C-Pong =============
 
     A 2D pong game written in C.
+	Using the Simple2D library.
 
      Tested on a Linux system.
 
@@ -9,7 +10,7 @@
 
      Author: 	Max Rodriguez
      Created: 	3-3-2021
-     Revised: 	3-30-2021
+     Revised: 	4-1-2021
 
   Copyright (C) 2020 Max Rodriguez
 
@@ -18,13 +19,12 @@
   ---------------------------------
 */
 
-#define VERSION "0.7"
+#define VERSION "1.0"
 #define FPS_MAX 60
 #define VSYNC true
 #define WIN_WIDTH 640
 #define WIN_HEIGHT 480
 
-#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -185,10 +185,10 @@ void update() {
 		/* ----- Global Features ----- */
 
 		int paddle[4][2] = {
-    		{(pad_x + (pad_w / 2)), (pad_y - (pad_h / 2))},
-			{(pad_x - (pad_w / 2)), (pad_y + (pad_h / 2))},
-    		{(pad_x - (pad_w / 2)), (pad_y + (pad_h / 2))},
-			{(pad_x + (pad_w / 2)), (pad_y - (pad_h / 2))}
+    		{(pad_x + (pad_w / 2)), (pad_y + (pad_h / 2))}, // Top Right
+			{(pad_x - (pad_w / 2)), (pad_y + (pad_h / 2))}, // Top Left
+			{(pad_x - (pad_w / 2)), (pad_y - (pad_h / 2))}, // Bottom Left
+			{(pad_x + (pad_w / 2)), (pad_y - (pad_h / 2))}  // Bttom Right
 		};
 
 		/* ----- Fun Mode Features ----- */
@@ -224,16 +224,35 @@ void update() {
 	/* ------ Following Drawn On Top ------ */
 
 	// Game Version Tag //
-	char _version_string[12];
-	snprintf(_version_string, 12, "Version %s", VERSION);
+	char version_string[12];
+	snprintf(version_string, 12, "Version %s", VERSION);
 
 	version_tag = S2D_CreateText(
 		"res/Press-Start-2P.ttf",
-		_version_string, 10);
+		version_string, 10);
 
 	version_tag -> x = WIN_WIDTH / 40;
 	version_tag -> y = WIN_HEIGHT / 1.04;
 	S2D_DrawText(version_tag);
+
+	// Lives Counter Text //
+	char life_str[1];
+	sprintf(life_str, "%i", lives);
+
+	char lives_string[8];
+	snprintf(lives_string, 8, "Lives: %s", life_str);
+
+	lives_count = S2D_CreateText(
+		"res/Press-Start-2P.ttf",
+		lives_string, 13);
+	
+	lives_count -> x = WIN_WIDTH / 1.23;
+	lives_count -> y = WIN_HEIGHT / 1.04;
+
+	lives_count -> color.g = 0.0;
+	lives_count -> color.b = 0.0;
+
+	S2D_DrawText(lives_count);
 
 	tick_counter++; // Add tick
 
@@ -262,6 +281,11 @@ void input(S2D_Event event) {
 
 void key_actions(char key, int state) {
 
+	printf("%c | %i\n", key, state);
+
+	// Not counting key release.
+	if (state == 3) return;
+
 	switch (key) {
 
 		case 'A':
@@ -272,9 +296,9 @@ void key_actions(char key, int state) {
 			}
 			break;
 
-		case 'U': pad_y++; break;
+		case 'U': pad_y = pad_y - 2; break;
 
-		case 'D': pad_y--; break;
+		case 'D': pad_y = pad_y + 2; break;
 
 	}
 

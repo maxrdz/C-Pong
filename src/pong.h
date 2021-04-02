@@ -12,7 +12,7 @@ int tick_counter = 0;
 int lives = 3;
 
 // Ball Properties //
-const int ball_radius = 20;
+const int ball_radius = 15;
 const int ball_sectors = 24;
 float ball_x = WIN_WIDTH / 2;
 float ball_y = WIN_HEIGHT / 2;
@@ -24,12 +24,13 @@ double b_color[4] = {
 int ball_state[2] = {1, 1};
 
 // Paddle Properties //
-const int y_margin = 25;
+const int y_margin = 85;
 const int pad_w = 20;
 const int pad_h = 100;
 
 int pad_x = WIN_WIDTH / 1.1;
 int pad_y = WIN_HEIGHT / 2;
+int paddle[4][2];
 
 // Text Objects
 S2D_Text *title;

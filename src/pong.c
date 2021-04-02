@@ -184,12 +184,27 @@ void update() {
 
 		/* ----- Global Features ----- */
 
-		int paddle[4][2] = {
-    		{(pad_x + (pad_w / 2)), (pad_y + (pad_h / 2))}, // Top Right
-			{(pad_x - (pad_w / 2)), (pad_y + (pad_h / 2))}, // Top Left
-			{(pad_x - (pad_w / 2)), (pad_y - (pad_h / 2))}, // Bottom Left
-			{(pad_x + (pad_w / 2)), (pad_y - (pad_h / 2))}  // Bttom Right
-		};
+		// Keep Paddle 'y' within margin.
+		if (pad_y < y_margin)
+			pad_y = y_margin;
+		else if (pad_y > WIN_HEIGHT - y_margin)
+			pad_y = WIN_HEIGHT - y_margin;
+
+		// Set new paddle pos, anchor at center.
+		paddle[0][0] = (pad_x + (pad_w / 2));
+		paddle[0][1] = (pad_y + (pad_h / 2));
+
+		paddle[1][0] = (pad_x - (pad_w / 2));
+		paddle[1][1] = (pad_y + (pad_h / 2));
+
+		paddle[2][0] = (pad_x - (pad_w / 2));
+		paddle[2][1] = (pad_y - (pad_h / 2));
+
+		paddle[3][0] = (pad_x + (pad_w / 2));
+		paddle[3][1] = (pad_y - (pad_h / 2));
+
+		// Ball Positioning & Bouncing
+
 
 		/* ----- Fun Mode Features ----- */
 
@@ -233,14 +248,13 @@ void update() {
 
 	version_tag -> x = WIN_WIDTH / 40;
 	version_tag -> y = WIN_HEIGHT / 1.04;
-	S2D_DrawText(version_tag);
 
 	// Lives Counter Text //
 	char life_str[1];
 	sprintf(life_str, "%i", lives);
 
-	char lives_string[8];
-	snprintf(lives_string, 8, "Lives: %s", life_str);
+	char lives_string[9];
+	snprintf(lives_string, 9, "%s Lives", life_str);
 
 	lives_count = S2D_CreateText(
 		"res/Press-Start-2P.ttf",
@@ -252,6 +266,8 @@ void update() {
 	lives_count -> color.g = 0.0;
 	lives_count -> color.b = 0.0;
 
+	// Draw to Screen
+	S2D_DrawText(version_tag);
 	S2D_DrawText(lives_count);
 
 	tick_counter++; // Add tick
@@ -269,6 +285,11 @@ void input(S2D_Event event) {
 			key_actions(*event.key, S2D_KEY_DOWN);
 			break;
 
+		case S2D_KEY_HELD:
+			debug("Key Being Held!\n");
+			key_actions(*event.key, S2D_KEY_HELD);
+			break;
+
 		case S2D_KEY_UP:
 			debug("Key Released!\n");
 			key_actions(*event.key, S2D_KEY_UP);
@@ -280,8 +301,6 @@ void input(S2D_Event event) {
 /* Key Stroke Actions */
 
 void key_actions(char key, int state) {
-
-	printf("%c | %i\n", key, state);
 
 	// Not counting key release.
 	if (state == 3) return;
@@ -296,10 +315,11 @@ void key_actions(char key, int state) {
 			}
 			break;
 
-		case 'U': pad_y = pad_y - 2; break;
+		case 'U':
+			if (game_start) pad_y = pad_y - 2; break;
 
-		case 'D': pad_y = pad_y + 2; break;
+		case 'D':
+			if (game_start) pad_y = pad_y + 2; break;
 
 	}
-
 }

@@ -215,24 +215,26 @@ void update() {
 
 		/* ----- Global Features ----- */
 
-		// Restrict Paddle 'y' within margin.
-		if (pad_y < y_margin)
-			pad_y = y_margin;
-		else if (pad_y > WIN_HEIGHT - y_margin)
-			pad_y = WIN_HEIGHT - y_margin;
+		// Create Catch Counter
+		char counter_string[10];
+		sprintf(counter_string, "%i - %i", ai_catches, plr_catches);
 
-		// Set new paddle pos, anchor at center.
-		paddle[0][0] = (pad_x + (pad_w / 2));
-		paddle[0][1] = (pad_y + (pad_h / 2));
+		catch_counter = S2D_CreateText(
+			"res/Press-Start-2P.ttf",
+			counter_string, 20);
 
-		paddle[1][0] = (pad_x - (pad_w / 2));
-		paddle[1][1] = (pad_y + (pad_h / 2));
+		catch_counter -> x = WIN_WIDTH / 2.35;
+		catch_counter -> y = WIN_HEIGHT / 30;
 
-		paddle[2][0] = (pad_x - (pad_w / 2));
-		paddle[2][1] = (pad_y - (pad_h / 2));
+		// Update the Player Paddle
+		int *p_plr_x = &plr_x;
+		int *p_plr_y = &plr_y;
+		paddle_update(plr_paddle, p_plr_x, p_plr_y);
 
-		paddle[3][0] = (pad_x + (pad_w / 2));
-		paddle[3][1] = (pad_y - (pad_h / 2));
+		// Update the AI Paddle
+		int *p_ai_x = &ai_x;
+		int *p_ai_y = &ai_y;
+		paddle_update(ai_paddle, p_ai_x, p_ai_y);
 
 		// Ball Positioning & Bouncing
 
@@ -252,8 +254,8 @@ void update() {
 			fun_text -> color.g = 0.0;
 			fun_text -> color.b = 0.7;
 
-			// Ball color loop (every other tick)
-			if (tick_counter % 2) {
+			// Ball color loop (every third tick)
+			if (tick_counter % 3) {
 
 				// Reset Ball Color Step
 				if (chain_track == 10) chain_track = 0;
@@ -270,13 +272,19 @@ void update() {
 
 		/* ------ Draw Objects ------ */
 
-		S2D_DrawQuad(
-			paddle[0][0], paddle[0][1], 1.0, 1.0, 1.0, 1.0,
-			paddle[1][0], paddle[1][1], 1.0, 1.0, 1.0, 1.0,
-			paddle[2][0], paddle[2][1], 1.0, 1.0, 1.0, 1.0,
-			paddle[3][0], paddle[3][1], 1.0, 1.0, 1.0, 1.0);
+		S2D_DrawQuad( // Plr Pad
+			plr_paddle[0][0], plr_paddle[0][1], 1.0, 1.0, 1.0, 1.0,
+			plr_paddle[1][0], plr_paddle[1][1], 1.0, 1.0, 1.0, 1.0,
+			plr_paddle[2][0], plr_paddle[2][1], 1.0, 1.0, 1.0, 1.0,
+			plr_paddle[3][0], plr_paddle[3][1], 1.0, 1.0, 1.0, 1.0);
 
-		S2D_DrawCircle(
+		S2D_DrawQuad( // AI Pad
+			ai_paddle[0][0], ai_paddle[0][1], 1.0, 1.0, 1.0, 1.0,
+			ai_paddle[1][0], ai_paddle[1][1], 1.0, 1.0, 1.0, 1.0,
+			ai_paddle[2][0], ai_paddle[2][1], 1.0, 1.0, 1.0, 1.0,
+			ai_paddle[3][0], ai_paddle[3][1], 1.0, 1.0, 1.0, 1.0);
+
+		S2D_DrawCircle( // Ball
 			ball_x, ball_y, ball_radius,
 			ball_sectors, b_color[0], b_color[1],
 			b_color[2], b_color[3]);
@@ -289,8 +297,34 @@ void update() {
 	S2D_DrawText(version_tag);
 	S2D_DrawText(lives_count);
 	S2D_DrawText(fun_text);
+	S2D_DrawText(catch_counter);
 
 	tick_counter++; // Add tick
+
+}
+
+/* Update Paddles */
+
+void paddle_update(int pad[4][2], int *x, int *y) {
+
+	// Paddle 'Y' Position Margin
+	if (*y < y_margin)
+		*y = y_margin;
+	else if (*y > WIN_HEIGHT - y_margin)
+		*y = WIN_HEIGHT - y_margin;
+
+	// Create Updated Paddle Position
+	pad[0][0] = (*x + (pad_w / 2));
+	pad[0][1] = (*y + (pad_h / 2));
+
+	pad[1][0] = (*x - (pad_w / 2));
+	pad[1][1] = (*y + (pad_h / 2));
+
+	pad[2][0] = (*x - (pad_w / 2));
+	pad[2][1] = (*y - (pad_h / 2));
+
+	pad[3][0] = (*x + (pad_w / 2));
+	pad[3][1] = (*y - (pad_h / 2));
 
 }
 
@@ -306,7 +340,6 @@ void input(S2D_Event event) {
 			break;
 
 		case S2D_KEY_HELD:
-			debug("Key Being Held!\n");
 			key_actions(*event.key, S2D_KEY_HELD);
 			break;
 
@@ -335,10 +368,16 @@ void key_actions(char key, int state) {
 			} break;
 
 		case 'U':
-			if (game_start) pad_y = pad_y - 2; break;
+			if (game_start) plr_y = plr_y - 2; break;
 
 		case 'D':
-			if (game_start) pad_y = pad_y + 2; break;
+			if (game_start) plr_y = plr_y + 2; break;
+
+		case 'W':
+			if (game_start) ai_y = ai_y - 2; break;
+
+		case 'S':
+			if (game_start) ai_y = ai_y + 2; break;
 
 	}
 }

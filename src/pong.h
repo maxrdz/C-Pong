@@ -14,6 +14,8 @@ int lives = 3;
 // Ball Properties //
 const int ball_radius = 8;
 const int ball_sectors = 24;
+const int court_margin = 80;
+
 float ball_x = WIN_WIDTH / 2;
 float ball_y = WIN_HEIGHT / 2;
 
@@ -42,19 +44,19 @@ const int pad_w = 15;
 const int pad_h = 60;
 
 // Player Paddle //
-int plr_x = WIN_WIDTH - WIN_WIDTH / 20;
-int plr_y = WIN_HEIGHT / 2;
+float plr_x = WIN_WIDTH - WIN_WIDTH / 20;
+float plr_y = WIN_HEIGHT / 2;
 int plr_paddle[4][2];
 int plr_catches = 0;
 
 // AI Paddle //
-int ai_x = WIN_WIDTH / 20;
-int ai_y = WIN_HEIGHT / 2;
+float ai_x = WIN_WIDTH / 20;
+float ai_y = WIN_HEIGHT / 2;
 int ai_paddle[4][2];
 int ai_catches = 0;
 
 // Update Paddles //
-void paddle_update(int pad[4][2], int *x, int *y);
+void paddle_update(int pad[4][2], float *x, float *y);
 
 // Text Objects
 S2D_Text *title;

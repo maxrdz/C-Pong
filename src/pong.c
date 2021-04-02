@@ -227,13 +227,13 @@ void update() {
 		catch_counter -> y = WIN_HEIGHT / 30;
 
 		// Update the Player Paddle
-		int *p_plr_x = &plr_x;
-		int *p_plr_y = &plr_y;
+		float *p_plr_x = &plr_x;
+		float *p_plr_y = &plr_y;
 		paddle_update(plr_paddle, p_plr_x, p_plr_y);
 
 		// Update the AI Paddle
-		int *p_ai_x = &ai_x;
-		int *p_ai_y = &ai_y;
+		float *p_ai_x = &ai_x;
+		float *p_ai_y = &ai_y;
 		paddle_update(ai_paddle, p_ai_x, p_ai_y);
 
 		// Ball Positioning & Bouncing
@@ -261,12 +261,10 @@ void update() {
 				if (chain_track == 10) chain_track = 0;
 
 				// Set Next Ball Color
-				b_color[0] = chain[chain_track - 1][0];
-				b_color[1] = chain[chain_track - 1][1];
-				b_color[2] = chain[chain_track - 1][2];
-				b_color[3] = chain[chain_track - 1][3];
-				chain_track++;
-
+				for (int i = 0; i <= 3; i++) {
+					b_color[i] = chain[chain_track - 1][i];
+				} chain_track++;
+				
 			}
 		}
 
@@ -305,7 +303,7 @@ void update() {
 
 /* Update Paddles */
 
-void paddle_update(int pad[4][2], int *x, int *y) {
+void paddle_update(int pad[4][2], float *x, float *y) {
 
 	// Paddle 'Y' Position Margin
 	if (*y < y_margin)

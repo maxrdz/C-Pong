@@ -18,8 +18,8 @@ const int ball_radius = 7;
 const int ball_sectors = 24;
 const int court_margin = 80;
 
-float ball_x = WIN_WIDTH / 2;
-float ball_y = WIN_HEIGHT / 2;
+int ball_x = WIN_WIDTH / 2;
+int ball_y = WIN_HEIGHT / 2;
 
 int ball_speed = 3;
 int ball_state[2] = {1, -1};
@@ -69,6 +69,7 @@ S2D_Text *fun_text;
 S2D_Text *version_tag;
 S2D_Text *lives_count;
 S2D_Text *catch_counter;
+S2D_Text *game_over;
 
 // Debug Function
 void debug(char input[]);

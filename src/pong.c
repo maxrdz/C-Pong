@@ -78,12 +78,10 @@ void read_flags(int argc, char *argv[]) {
 
 		} else if (strcmp(argv[i], "-f") == 0) {
 
-			fun_mode = true; // Set Mode
-			lives = 999; // Infinite Lives
+			fun_mode = true; lives = 999;
 
-			// Double Ball & Paddle Speed
 			paddle_speed = paddle_speed * 2;
-			ball_speed = ball_speed * 2;
+			ball_speed = ball_speed * 1.7;
 
 			srand(time(NULL));
 			int result_x = rand() % 2;
@@ -136,17 +134,17 @@ void update() {
 	version_tag -> y = WIN_HEIGHT / 1.04;
 
 	// Define Lives Counter
-	char life_str[1];
+	char life_str[3];
 	sprintf(life_str, "%i", lives);
 
-	char lives_string[9];
-	snprintf(lives_string, 9, "%s Lives", life_str);
+	char lives_string[12];
+	snprintf(lives_string, 12, "%s Lives", life_str);
 
 	lives_count = S2D_CreateText(
 		"res/Press-Start-2P.ttf",
 		lives_string, 13);
 		
-	lives_count -> x = WIN_WIDTH / 1.23;
+	lives_count -> x = WIN_WIDTH / 1.25;
 	lives_count -> y = WIN_HEIGHT / 1.04;
 
 	lives_count -> color.g = 0.0;
@@ -245,15 +243,15 @@ void update() {
 		paddle_update(left_paddle, p_lx, p_ly);
 
 		// Ball Vertical Bounce
-		if (ball_y >= court_margin || 
-			ball_y <= WIN_HEIGHT - court_margin) {
+		if (ball_y <= court_margin || 
+			ball_y >= WIN_HEIGHT - court_margin) {
 
 			debug("Ball Bounced on court margin!\n");
 			ball_state[1] = ball_state[1] * (-1);
 		}
 
 		// Ball Horizontal Bounce [Right Paddle]
-		if ((ball_x + ball_radius) == (right_x - (pad_w / 2))) {
+		if ((ball_x + ball_radius) >= (right_x - (pad_w / 2))) {
 
 			if (ball_y <= (right_y + (pad_h / 2)) &&
 				ball_y >= (right_y - (pad_h / 2))) {
@@ -264,14 +262,14 @@ void update() {
 			} else {
 
 				debug("Ball Missed!\n");
-				lives = lives - 1;
+				if (lives > 0) lives = lives - 1;
 				ball_x = WIN_WIDTH / 2;
 				ball_y = WIN_HEIGHT / 2;
 			}
 		}
 
 		// Ball Horizontal Bounce [Left Paddle]
-		if ((ball_x - ball_radius) == (left_x + (pad_w / 2))) {
+		if ((ball_x - ball_radius) <= (left_x + (pad_w / 2))) {
 
 			if (ball_y <= (left_y + (pad_h / 2)) &&
 				ball_y >= (left_y - (pad_h / 2))) {
@@ -282,7 +280,7 @@ void update() {
 			} else {
 
 				debug("Ball Missed!\n");
-				lives = lives - 1;
+				if (lives > 0) lives = lives - 1;
 				ball_x = WIN_WIDTH / 2;
 				ball_y = WIN_HEIGHT / 2;
 			}
@@ -323,23 +321,54 @@ void update() {
 
 		/* ------ Draw Objects ------ */
 
-		S2D_DrawQuad( // Right Paddle
-			right_paddle[0][0], right_paddle[0][1], 1.0, 1.0, 1.0, 1.0,
-			right_paddle[1][0], right_paddle[1][1], 1.0, 1.0, 1.0, 1.0,
-			right_paddle[2][0], right_paddle[2][1], 1.0, 1.0, 1.0, 1.0,
-			right_paddle[3][0], right_paddle[3][1], 1.0, 1.0, 1.0, 1.0);
+		if (lives != 0) {
 
-		S2D_DrawQuad( // Left Paddle
-			left_paddle[0][0], left_paddle[0][1], 1.0, 1.0, 1.0, 1.0,
-			left_paddle[1][0], left_paddle[1][1], 1.0, 1.0, 1.0, 1.0,
-			left_paddle[2][0], left_paddle[2][1], 1.0, 1.0, 1.0, 1.0,
-			left_paddle[3][0], left_paddle[3][1], 1.0, 1.0, 1.0, 1.0);
+			S2D_DrawQuad( // Right Paddle
+				right_paddle[0][0], right_paddle[0][1], 1.0, 1.0, 1.0, 1.0,
+				right_paddle[1][0], right_paddle[1][1], 1.0, 1.0, 1.0, 1.0,
+				right_paddle[2][0], right_paddle[2][1], 1.0, 1.0, 1.0, 1.0,
+				right_paddle[3][0], right_paddle[3][1], 1.0, 1.0, 1.0, 1.0);
 
-		S2D_DrawCircle( // Court Ball
-			ball_x, ball_y, ball_radius,
-			ball_sectors, b_color[0], b_color[1],
-			b_color[2], b_color[3]);
+			S2D_DrawQuad( // Left Paddle
+				left_paddle[0][0], left_paddle[0][1], 1.0, 1.0, 1.0, 1.0,
+				left_paddle[1][0], left_paddle[1][1], 1.0, 1.0, 1.0, 1.0,
+				left_paddle[2][0], left_paddle[2][1], 1.0, 1.0, 1.0, 1.0,
+				left_paddle[3][0], left_paddle[3][1], 1.0, 1.0, 1.0, 1.0);
 
+			S2D_DrawCircle( // Court Ball
+				ball_x, ball_y, ball_radius,
+				ball_sectors, b_color[0], b_color[1],
+				b_color[2], b_color[3]);
+
+		} else {
+
+			// Game Over Text
+			game_over = S2D_CreateText(
+				"res/Press-Start-2P.ttf",
+				"Game Over", 50);
+
+			game_over -> color.g = 0.0;
+			game_over -> color.b = 0.0;
+
+			game_over -> x = WIN_WIDTH / 5.8;
+			game_over -> y = WIN_HEIGHT / 2.5;
+
+			switch (start_txt) {
+
+				case true:
+					game_over -> color.a = 1.0;
+					if (tick_counter % 30 == 0) start_txt = false;
+					break;
+
+				case false:
+					game_over -> color.a = 0.0;
+					if (tick_counter % 30 == 0) start_txt = true;
+					break;
+			}
+
+			S2D_DrawText(game_over);
+
+		}
 	}
 
 	/* ------ Following Drawn On Top ------ */

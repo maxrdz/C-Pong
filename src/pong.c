@@ -19,7 +19,7 @@
   ---------------------------------
 */
 
-#define VERSION "1.0"
+#define VERSION "1.1"
 #define FPS_MAX 60
 #define VSYNC true
 #define WIN_WIDTH 640
@@ -55,6 +55,9 @@ int main(int argc, char *argv[]) {
 	window -> vsync = VSYNC;
 	window -> icon = "res/icon.png";
 	window -> on_key = input;
+
+	// Start Clock for Ticks
+	reference_t = (clock_t) clock();
 
 	// Launch Window Loop
   	S2D_Show(window);
@@ -118,9 +121,6 @@ void debug(char input[]) {
 /* S2D Update Function */
 
 void update() {
-
-	// Ticks Reset (avoids overflow) //
-	if (tick_counter == 30) tick_counter = 0;
 
 	// Define Version Tag
 	char version_string[12];
@@ -262,9 +262,13 @@ void update() {
 			} else {
 
 				debug("Ball Missed!\n");
-				if (lives > 0) lives = lives - 1;
 				ball_x = WIN_WIDTH / 2;
 				ball_y = WIN_HEIGHT / 2;
+
+				if (lives > 0) {
+					lives = lives - 1;
+					left_catches++;
+				}
 			}
 		}
 
@@ -280,9 +284,13 @@ void update() {
 			} else {
 
 				debug("Ball Missed!\n");
-				if (lives > 0) lives = lives - 1;
 				ball_x = WIN_WIDTH / 2;
 				ball_y = WIN_HEIGHT / 2;
+
+				if (lives > 0) {
+					lives = lives - 1;
+					right_catches++;
+				}
 			}
 		}
 
@@ -305,18 +313,14 @@ void update() {
 			fun_text -> color.g = 0.0;
 			fun_text -> color.b = 0.7;
 
-			// Ball color loop (every third tick)
-			if (tick_counter % 3 == 0) {
+			// Reset Ball Color Step
+			if (chain_track == 10) chain_track = 0;
 
-				// Reset Ball Color Step
-				if (chain_track == 10) chain_track = 0;
+			// Set Next Ball Color
+			for (int i = 0; i <= 3; i++) {
+				b_color[i] = chain[chain_track - 1][i];
+			} chain_track++;
 
-				// Set Next Ball Color
-				for (int i = 0; i <= 3; i++) {
-					b_color[i] = chain[chain_track - 1][i];
-				} chain_track++;
-				
-			}
 		}
 
 		/* ------ Draw Objects ------ */
@@ -379,8 +383,6 @@ void update() {
 	S2D_DrawText(fun_text);
 	S2D_DrawText(catch_counter);
 
-	tick_counter++; // Add tick
-
 }
 
 /* Update Paddles */
@@ -408,8 +410,24 @@ void paddle_update(int pad[4][2], float *x, float *y) {
 
 }
 
-/* S2D Render */
-void render() {}
+/* S2D Render Function */
+
+void render() {
+
+	// Get Current Sys Time
+	now_t = (clock_t) clock();
+
+	// Get Clock Time Difference
+	diff_t = (double)(now_t - reference_t) / 6000;
+
+	if (diff_t % 1 == 0) {
+		tick_counter += 1;
+		reference_t = now_t;
+	}
+
+	if (tick_counter % 30 == 0) tick_counter = 0;
+	
+}
 
 /* S2D On Key Callback */
 

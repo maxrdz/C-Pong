@@ -8,10 +8,11 @@
 // Game Variables
 bool game_start = false;
 bool start_txt = true;
-
 int paddle_speed = 2;
-int tick_counter = 0;
 int lives = 3;
+
+clock_t reference_t, now_t, diff_t;
+int tick_counter = 0;
 
 // Ball Properties //
 const int ball_radius = 7;
@@ -60,6 +61,13 @@ int left_catches = 0;
 
 // Update Paddles //
 void paddle_update(int pad[4][2], float *x, float *y);
+
+// Feedback Phrases //
+char phrases[3][11] = {
+    "Nice Catch!",
+    "Quick Save!",
+    "Close Miss!"
+};
 
 // Text Objects
 S2D_Text *title;

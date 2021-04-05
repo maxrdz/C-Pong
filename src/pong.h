@@ -1,5 +1,5 @@
 /*
-    Pong.c Header File
+    Pong Header File
 */
 
 #ifndef INCLUDED
@@ -8,18 +8,21 @@
 // Game Variables
 bool game_start = false;
 bool start_txt = true;
+
+int paddle_speed = 2;
 int tick_counter = 0;
 int lives = 3;
 
 // Ball Properties //
-const int ball_radius = 5;
+const int ball_radius = 7;
 const int ball_sectors = 24;
 const int court_margin = 80;
 
 float ball_x = WIN_WIDTH / 2;
 float ball_y = WIN_HEIGHT / 2;
 
-int ball_state[2]; // Movement at x/y
+int ball_speed = 3;
+int ball_state[2] = {1, -1};
 
 double b_color[4] = {
 	1.0, 1.0, 1.0, 1.0};

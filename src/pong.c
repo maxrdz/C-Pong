@@ -25,6 +25,7 @@
 #define WIN_WIDTH 640
 #define WIN_HEIGHT 480
 
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -73,12 +74,36 @@ void read_flags(int argc, char *argv[]) {
 
 		if (strcmp(argv[i], "-d") == 0) {
 
-			debug_mode = true;
+			debug_mode = true; // Set Mode
 
 		} else if (strcmp(argv[i], "-f") == 0) {
 
-			fun_mode = true;
+			fun_mode = true; // Set Mode
+			lives = 999; // Infinite Lives
 
+			// Double Ball & Paddle Speed
+			paddle_speed = paddle_speed * 2;
+			ball_speed = ball_speed * 2;
+
+			srand(time(NULL));
+			int result_x = rand() % 2;
+			int result_y = rand() % 2;
+
+			debug("\nBall Kick-Off 'x': ");
+			switch (result_x) {
+				case 1: debug("+1\n");
+				ball_state[0] = 1; break;
+				case 0: debug("-1\n");
+				ball_state[0] = -1; break;
+			}
+
+			debug("Ball Kick-Off 'y': ");
+			switch (result_y){
+				case 1: debug("+1\n\n");
+				ball_state[1] = 1; break;
+				case 0: debug("-1\n\n");
+				ball_state[1] = -1; break;
+			}
 		}
 	}
 }
@@ -90,7 +115,6 @@ void debug(char input[]) {
 	if (debug_mode == true) {
 		printf("%s", input);
 	}
-
 }
 
 /* S2D Update Function */
@@ -159,23 +183,13 @@ void update() {
 		switch (start_txt) {
 
 			case true:
-
 				play -> color.a = 1.0;
-
-				if (tick_counter % 30 == 0) {
-					debug("Start Text Drawn.\n");
-					start_txt = false;
-				}
+				if (tick_counter % 30 == 0) start_txt = false;
 				break;
 
 			case false:
-
 				play -> color.a = 0.0;
-
-				if (tick_counter % 30 == 0) {
-					debug("Start Text Freed.\n");
-					start_txt = true;
-				}
+				if (tick_counter % 30 == 0) start_txt = true;
 				break;
 		}
 
@@ -220,18 +234,63 @@ void update() {
 		catch_counter -> x = WIN_WIDTH / 2.35;
 		catch_counter -> y = WIN_HEIGHT / 30;
 
-		// Update the Player Paddle
+		// Update the Right Paddle
 		float *p_rx = &right_x;
 		float *p_ry = &right_y;
 		paddle_update(right_paddle, p_rx, p_ry);
 
-		// Update the AI Paddle
+		// Update the Left Paddle
 		float *p_lx = &left_x;
 		float *p_ly = &left_y;
 		paddle_update(left_paddle, p_lx, p_ly);
 
-		// Ball Positioning & Bouncing
+		// Ball Vertical Bounce
+		if (ball_y >= court_margin || 
+			ball_y <= WIN_HEIGHT - court_margin) {
 
+			debug("Ball Bounced on court margin!\n");
+			ball_state[1] = ball_state[1] * (-1);
+		}
+
+		// Ball Horizontal Bounce [Right Paddle]
+		if ((ball_x + ball_radius) == (right_x - (pad_w / 2))) {
+
+			if (ball_y <= (right_y + (pad_h / 2)) &&
+				ball_y >= (right_y - (pad_h / 2))) {
+
+				debug("Ball Bounced on right paddle!\n");
+				ball_state[0] = ball_state[0] * (-1);
+
+			} else {
+
+				debug("Ball Missed!\n");
+				lives = lives - 1;
+				ball_x = WIN_WIDTH / 2;
+				ball_y = WIN_HEIGHT / 2;
+			}
+		}
+
+		// Ball Horizontal Bounce [Left Paddle]
+		if ((ball_x - ball_radius) == (left_x + (pad_w / 2))) {
+
+			if (ball_y <= (left_y + (pad_h / 2)) &&
+				ball_y >= (left_y - (pad_h / 2))) {
+
+				debug("Ball Bounced on right paddle!\n");
+				ball_state[0] = ball_state[0] * (-1);
+
+			} else {
+
+				debug("Ball Missed!\n");
+				lives = lives - 1;
+				ball_x = WIN_WIDTH / 2;
+				ball_y = WIN_HEIGHT / 2;
+			}
+		}
+
+		// Update Ball x/y Position
+		ball_x += ball_state[0] * ball_speed;
+		ball_y += ball_state[1] * ball_speed;
 
 		/* ----- Fun Mode Features ----- */
 
@@ -276,7 +335,7 @@ void update() {
 			left_paddle[2][0], left_paddle[2][1], 1.0, 1.0, 1.0, 1.0,
 			left_paddle[3][0], left_paddle[3][1], 1.0, 1.0, 1.0, 1.0);
 
-		S2D_DrawCircle( // Ball
+		S2D_DrawCircle( // Court Ball
 			ball_x, ball_y, ball_radius,
 			ball_sectors, b_color[0], b_color[1],
 			b_color[2], b_color[3]);
@@ -363,16 +422,20 @@ void key_actions(char key, int state) {
 			} break;
 
 		case 'U':
-			if (game_start) right_y = right_y - 2; break;
+			if (game_start)
+			right_y = right_y - paddle_speed; break;
 
 		case 'D':
-			if (game_start) right_y = right_y + 2; break;
+			if (game_start)
+			right_y = right_y + paddle_speed; break;
 
 		case 'W':
-			if (game_start) left_y = left_y - 2; break;
+			if (game_start)
+			left_y = left_y - paddle_speed; break;
 
 		case 'S':
-			if (game_start) left_y = left_y + 2; break;
+			if (game_start)
+			left_y = left_y + paddle_speed; break;
 
 	}
 }

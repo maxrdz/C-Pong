@@ -93,12 +93,6 @@ void debug(char input[]) {
 
 }
 
-/* S2D Render Function */
-
-void render() {
-	// All on update()
-}
-
 /* S2D Update Function */
 
 void update() {
@@ -217,7 +211,7 @@ void update() {
 
 		// Create Catch Counter
 		char counter_string[10];
-		sprintf(counter_string, "%i - %i", ai_catches, plr_catches);
+		sprintf(counter_string, "%i - %i", left_catches, right_catches);
 
 		catch_counter = S2D_CreateText(
 			"res/Press-Start-2P.ttf",
@@ -227,14 +221,14 @@ void update() {
 		catch_counter -> y = WIN_HEIGHT / 30;
 
 		// Update the Player Paddle
-		float *p_plr_x = &plr_x;
-		float *p_plr_y = &plr_y;
-		paddle_update(plr_paddle, p_plr_x, p_plr_y);
+		float *p_rx = &right_x;
+		float *p_ry = &right_y;
+		paddle_update(right_paddle, p_rx, p_ry);
 
 		// Update the AI Paddle
-		float *p_ai_x = &ai_x;
-		float *p_ai_y = &ai_y;
-		paddle_update(ai_paddle, p_ai_x, p_ai_y);
+		float *p_lx = &left_x;
+		float *p_ly = &left_y;
+		paddle_update(left_paddle, p_lx, p_ly);
 
 		// Ball Positioning & Bouncing
 
@@ -255,7 +249,7 @@ void update() {
 			fun_text -> color.b = 0.7;
 
 			// Ball color loop (every third tick)
-			if (tick_counter % 3) {
+			if (tick_counter % 3 == 0) {
 
 				// Reset Ball Color Step
 				if (chain_track == 10) chain_track = 0;
@@ -270,17 +264,17 @@ void update() {
 
 		/* ------ Draw Objects ------ */
 
-		S2D_DrawQuad( // Plr Pad
-			plr_paddle[0][0], plr_paddle[0][1], 1.0, 1.0, 1.0, 1.0,
-			plr_paddle[1][0], plr_paddle[1][1], 1.0, 1.0, 1.0, 1.0,
-			plr_paddle[2][0], plr_paddle[2][1], 1.0, 1.0, 1.0, 1.0,
-			plr_paddle[3][0], plr_paddle[3][1], 1.0, 1.0, 1.0, 1.0);
+		S2D_DrawQuad( // Right Paddle
+			right_paddle[0][0], right_paddle[0][1], 1.0, 1.0, 1.0, 1.0,
+			right_paddle[1][0], right_paddle[1][1], 1.0, 1.0, 1.0, 1.0,
+			right_paddle[2][0], right_paddle[2][1], 1.0, 1.0, 1.0, 1.0,
+			right_paddle[3][0], right_paddle[3][1], 1.0, 1.0, 1.0, 1.0);
 
-		S2D_DrawQuad( // AI Pad
-			ai_paddle[0][0], ai_paddle[0][1], 1.0, 1.0, 1.0, 1.0,
-			ai_paddle[1][0], ai_paddle[1][1], 1.0, 1.0, 1.0, 1.0,
-			ai_paddle[2][0], ai_paddle[2][1], 1.0, 1.0, 1.0, 1.0,
-			ai_paddle[3][0], ai_paddle[3][1], 1.0, 1.0, 1.0, 1.0);
+		S2D_DrawQuad( // Left Paddle
+			left_paddle[0][0], left_paddle[0][1], 1.0, 1.0, 1.0, 1.0,
+			left_paddle[1][0], left_paddle[1][1], 1.0, 1.0, 1.0, 1.0,
+			left_paddle[2][0], left_paddle[2][1], 1.0, 1.0, 1.0, 1.0,
+			left_paddle[3][0], left_paddle[3][1], 1.0, 1.0, 1.0, 1.0);
 
 		S2D_DrawCircle( // Ball
 			ball_x, ball_y, ball_radius,
@@ -326,6 +320,9 @@ void paddle_update(int pad[4][2], float *x, float *y) {
 
 }
 
+/* S2D Render */
+void render() {}
+
 /* S2D On Key Callback */
 
 void input(S2D_Event event) {
@@ -366,16 +363,16 @@ void key_actions(char key, int state) {
 			} break;
 
 		case 'U':
-			if (game_start) plr_y = plr_y - 2; break;
+			if (game_start) right_y = right_y - 2; break;
 
 		case 'D':
-			if (game_start) plr_y = plr_y + 2; break;
+			if (game_start) right_y = right_y + 2; break;
 
 		case 'W':
-			if (game_start) ai_y = ai_y - 2; break;
+			if (game_start) left_y = left_y - 2; break;
 
 		case 'S':
-			if (game_start) ai_y = ai_y + 2; break;
+			if (game_start) left_y = left_y + 2; break;
 
 	}
 }

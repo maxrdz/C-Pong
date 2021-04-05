@@ -12,14 +12,14 @@ int tick_counter = 0;
 int lives = 3;
 
 // Ball Properties //
-const int ball_radius = 8;
+const int ball_radius = 5;
 const int ball_sectors = 24;
 const int court_margin = 80;
 
 float ball_x = WIN_WIDTH / 2;
 float ball_y = WIN_HEIGHT / 2;
 
-int ball_state[2] = {1, 1};
+int ball_state[2]; // Movement at x/y
 
 double b_color[4] = {
 	1.0, 1.0, 1.0, 1.0};
@@ -44,16 +44,16 @@ const int pad_w = 15;
 const int pad_h = 60;
 
 // Player Paddle //
-float plr_x = WIN_WIDTH - WIN_WIDTH / 20;
-float plr_y = WIN_HEIGHT / 2;
-int plr_paddle[4][2];
-int plr_catches = 0;
+float right_x = WIN_WIDTH - WIN_WIDTH / 20;
+float right_y = WIN_HEIGHT / 2;
+int right_paddle[4][2];
+int right_catches = 0;
 
 // AI Paddle //
-float ai_x = WIN_WIDTH / 20;
-float ai_y = WIN_HEIGHT / 2;
-int ai_paddle[4][2];
-int ai_catches = 0;
+float left_x = WIN_WIDTH / 20;
+float left_y = WIN_HEIGHT / 2;
+int left_paddle[4][2];
+int left_catches = 0;
 
 // Update Paddles //
 void paddle_update(int pad[4][2], float *x, float *y);

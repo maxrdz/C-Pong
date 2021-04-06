@@ -38,11 +38,11 @@ bool fun_mode = false;
 
 int main(int argc, char *argv[]) {
 
-	// Check Invoked Flags
-	read_flags(argc, argv);
-
 	printf("\n------------ C-Pong ------------\n");
 	printf("\nCopyright (C) 2020 Max Rodriguez \n\n");
+
+	// Check Invoked Flags
+	read_flags(argc, argv);
 
 	// Initialize Window
 	S2D_Window *window = S2D_CreateWindow(
@@ -55,6 +55,9 @@ int main(int argc, char *argv[]) {
 	window -> vsync = VSYNC;
 	window -> icon = "res/icon.png";
 	window -> on_key = input;
+
+	// Set Generator Seed
+	srand(time(NULL));
 
 	// Start Clock for Ticks
 	reference_t = (clock_t) clock();
@@ -81,12 +84,11 @@ void read_flags(int argc, char *argv[]) {
 
 		} else if (strcmp(argv[i], "-f") == 0) {
 
-			fun_mode = true; lives = 999;
+			fun_mode = true; lives = 7;
 
 			paddle_speed = paddle_speed * 2;
 			ball_speed = ball_speed * 1.7;
 
-			srand(time(NULL));
 			int result_x = rand() % 2;
 			int result_y = rand() % 2;
 
@@ -246,7 +248,6 @@ void update() {
 		if (ball_y <= court_margin || 
 			ball_y >= WIN_HEIGHT - court_margin) {
 
-			debug("Ball Bounced on court margin!\n");
 			ball_state[1] = ball_state[1] * (-1);
 		}
 
@@ -259,6 +260,15 @@ void update() {
 				debug("Ball Bounced on right paddle!\n");
 				ball_state[0] = ball_state[0] * (-1);
 
+				if (show_phrase == false) {
+
+					int random = rand() % 3;
+
+					if (random == 1 || random == 2) {
+						show_phrase = true;
+					}
+				}
+
 			} else {
 
 				debug("Ball Missed!\n");
@@ -266,6 +276,7 @@ void update() {
 				ball_y = WIN_HEIGHT / 2;
 
 				if (lives > 0) {
+
 					lives = lives - 1;
 					left_catches++;
 				}
@@ -278,8 +289,17 @@ void update() {
 			if (ball_y <= (left_y + (pad_h / 2)) &&
 				ball_y >= (left_y - (pad_h / 2))) {
 
-				debug("Ball Bounced on right paddle!\n");
+				debug("Ball Bounced on left paddle!\n");
 				ball_state[0] = ball_state[0] * (-1);
+
+				if (show_phrase == false) {
+
+					int random = rand() % 3;
+
+					if (random == 1 || random == 2) {
+						show_phrase = true;
+					}
+				}
 
 			} else {
 
@@ -288,6 +308,7 @@ void update() {
 				ball_y = WIN_HEIGHT / 2;
 
 				if (lives > 0) {
+
 					lives = lives - 1;
 					right_catches++;
 				}
@@ -321,6 +342,44 @@ void update() {
 				b_color[i] = chain[chain_track - 1][i];
 			} chain_track++;
 
+			if (show_phrase) {
+
+				if (new_phrase) {
+
+					int random = rand() % 3;
+
+					// Create Phrase Text
+					feedback = S2D_CreateText(
+						"res/Press-Start-2P.ttf",
+						phrases[random], 20);
+
+					feedback -> x = WIN_WIDTH / 2.9;
+					feedback -> y = WIN_HEIGHT / 1.2;
+
+					feedback -> color.r = 0.0;
+					feedback -> color.b = 0.0;
+
+					new_phrase = false;
+					debug("New Phrase Shown!\n");
+				}
+
+				feedback -> color.a = phrase_fade;
+
+				// Tone down every third tick
+				if (tick_counter % 5 == 0) {
+
+					phrase_fade = phrase_fade - 0.05;
+
+					if (phrase_fade <= 0.0) {
+
+						phrase_fade = 1.0;
+						show_phrase = false;
+						new_phrase = true;
+
+						debug("Phrase Done!\n");
+					}
+				}
+			}
 		}
 
 		/* ------ Draw Objects ------ */
@@ -343,6 +402,8 @@ void update() {
 				ball_x, ball_y, ball_radius,
 				ball_sectors, b_color[0], b_color[1],
 				b_color[2], b_color[3]);
+
+			if (show_phrase) S2D_DrawText(feedback); // Feedback Phrase
 
 		} else {
 
@@ -425,7 +486,8 @@ void render() {
 		reference_t = now_t;
 	}
 
-	if (tick_counter % 30 == 0) tick_counter = 0;
+	// Every 3000 ticks = reset, avoids overflow.
+	if (tick_counter % 3000 == 0) tick_counter = 0;
 	
 }
 
@@ -436,7 +498,6 @@ void input(S2D_Event event) {
 	switch (event.type) {
 
 		case S2D_KEY_DOWN:
-			debug("Key Pressed!\n");
 			key_actions(*event.key, S2D_KEY_DOWN);
 			break;
 
@@ -445,7 +506,6 @@ void input(S2D_Event event) {
 			break;
 
 		case S2D_KEY_UP:
-			debug("Key Released!\n");
 			key_actions(*event.key, S2D_KEY_UP);
 			break;
 

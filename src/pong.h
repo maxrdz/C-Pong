@@ -8,6 +8,7 @@
 // Game Variables
 bool game_start = false;
 bool start_txt = true;
+bool show_phrase = false;
 int paddle_speed = 2;
 int lives = 3;
 
@@ -63,10 +64,15 @@ int left_catches = 0;
 void paddle_update(int pad[4][2], float *x, float *y);
 
 // Feedback Phrases //
-char phrases[3][11] = {
-    "Nice Catch!",
-    "Quick Save!",
-    "Close Miss!"
+bool new_phrase = true;
+double phrase_fade = 1.00;
+
+char phrase1[11] = "Nice Catch!";
+char phrase2[11] = "Close Miss!";
+char phrase3[11] = "Quick Save!";
+
+const char* phrases[] = {
+    phrase1, phrase2, phrase3
 };
 
 // Text Objects
@@ -78,6 +84,7 @@ S2D_Text *version_tag;
 S2D_Text *lives_count;
 S2D_Text *catch_counter;
 S2D_Text *game_over;
+S2D_Text *feedback;
 
 // Debug Function
 void debug(char input[]);
